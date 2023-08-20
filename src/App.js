@@ -3,7 +3,7 @@ import './App.css';
 import {
   AppBar,
   Toolbar,
-  Typography,Container,TextField,Fab,List,ListItem,ListItemText,ListItemSecondaryAction,IconButton}
+  Typography,Container,TextField,Fab,List,ListItem,ListItemText,ListItemSecondaryAction,IconButton,Box}
    from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckIcon from '@mui/icons-material/Check';
@@ -15,8 +15,8 @@ function App() {
   
   const [newTask, setNewTask] = useState('');
   const [tasks, setTasks] = useState([]);
-  
-
+  const [totalTasks, setTotalTasks] = useState(0)
+  const [completedTasks, setCompletedTasks] = useState(0)
   
   
   function handleAddTask (){
@@ -24,22 +24,25 @@ function App() {
     const newTaskObject = { id: newId, content: newTask, isCompleted:false} //* content => task text, isCompleted => changes the property style
     setTasks([...tasks, newTaskObject]);
     setNewTask('');
+    setTotalTasks(i=>i+1)
   }
 
   function handleDeleteTask(id){
     const updatedTasks = tasks.filter((task) => task.id !== id);
-    setTasks(updatedTasks);
+    setTasks(updatedTasks)
   }
   
   //* changes isCompleted attribute
   function handleCompleteTask(id){
     const updatedTasks = tasks.map((task)=>{
       if(task.id===id){
+        setCompletedTasks(i=>i+1)
         return {...task, isCompleted: !task.isCompleted }
       }
       return task
     })
     setTasks(updatedTasks)
+    setTotalTasks(i=>i-1)
   }
 
   return (
@@ -67,9 +70,17 @@ function App() {
 
       {/** BUTTON ADD handleAddTask */}
       
+      <Box display='flex' sx={{justifyContent:'space-between', alignItems:'center',mt:'20px'}}>
         <Fab onClick={handleAddTask} variant="contained" color="primary" size="small" >
           <AddTaskIcon />
         </Fab>
+
+        {/** TOTAL TASKS */ }
+               <Box display={'flex'}   >
+                  <Typography>Total Tasks: {totalTasks} </Typography>
+                  <Typography sx={{ml:"2em"}}>Completed Tasks: {completedTasks} </Typography>
+               </Box>
+        </Box>
       
       {/** LIST OF TASKS */}
         <List sx={{ marginTop: '20px' }}>
@@ -109,7 +120,6 @@ function App() {
                   aria-label="delete"
                   onClick={() => handleDeleteTask(task.id)}
                   sx={{color: task.isCompleted ? 'white' : 'rgba(33, 150, 243, 0.8)'}}
-                  pl="5em"
                 >
                   <DeleteIcon />
                 </IconButton>
