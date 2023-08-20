@@ -3,11 +3,17 @@ import './App.css';
 import {
   AppBar,
   Toolbar,
-  Typography,Container,TextField} from '@mui/material';
+  Typography,Container,TextField,Button,List} from '@mui/material';
 
 function App() {
   
   const [newTask, setNewTask] = useState('');
+  const [tasks, setTasks] = useState([]);
+
+  function handleAddTask (){
+    setTasks([...tasks, newTask]);
+    setNewTask('');
+  }
 
   return (
     <div className="App">
@@ -31,7 +37,15 @@ function App() {
         fullWidth
         variant="outlined"
       />
-
+      <Button onClick={handleAddTask} variant="contained" color="primary" size="small" >
+          Add
+        </Button>
+      
+      <List>
+        {tasks.map((task)=>(
+          <p>{task}</p>
+        ))}
+      </List>
       
 
 
