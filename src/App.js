@@ -3,7 +3,10 @@ import './App.css';
 import {
   AppBar,
   Toolbar,
-  Typography,Container,TextField,Button,List} from '@mui/material';
+  Typography,Container,TextField,Button,List,ListItem,ListItemText,ListItemSecondaryAction,IconButton}
+   from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 function App() {
   
@@ -11,8 +14,15 @@ function App() {
   const [tasks, setTasks] = useState([]);
 
   function handleAddTask (){
-    setTasks([...tasks, newTask]);
+    const newId = Date.now();
+    const newTaskObject = { id: newId, content: newTask}
+    setTasks([...tasks, newTaskObject]);
     setNewTask('');
+  }
+
+  function handleDeleteTask(id){
+    const updatedTasks = tasks.filter((task) => task.id !== id);
+    setTasks(updatedTasks);
   }
 
   return (
@@ -37,15 +47,36 @@ function App() {
         fullWidth
         variant="outlined"
       />
+
+      {/** BUTTON ADD handleAddTask */}
       <Button onClick={handleAddTask} variant="contained" color="primary" size="small" >
           Add
         </Button>
       
-      <List>
-        {tasks.map((task)=>(
-          <p>{task}</p>
-        ))}
-      </List>
+        <List sx={{ marginTop: '20px' }}>
+          {tasks.map((task) => (
+            <ListItem
+             display={'flex'}
+              key={task.id}
+
+            >
+              <ListItemText primary={task.content} />
+              <ListItemSecondaryAction>
+
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => handleDeleteTask(task.id)}
+                  ml="1em"
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
+
+      
       
 
 
