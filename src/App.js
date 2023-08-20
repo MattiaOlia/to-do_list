@@ -1,23 +1,47 @@
-import logo from './logo.svg';
+import {useState} from 'react'
 import './App.css';
+import {
+  AppBar,
+  Toolbar,
+  Typography,Container,TextField} from '@mui/material';
 
 function App() {
+  
+  const [newTask, setNewTask] = useState('');
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+
+      {/** NAVBAR */}
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6">To-Do List Basic test</Typography>
+        </Toolbar>
+      </AppBar>
+      
+      <Container maxWidth="sm" sx={{ marginTop: '3em' }}>
+      
+      {/** TEXTFIELD */}
+      <TextField 
+        type="text"
+        value={newTask}
+        onChange={(e) => setNewTask(e.target.value)}
+        placeholder="Enter a new task"
+        fullWidth
+        variant="outlined"
+      />
+
+      
+
+
+
+
+      </Container>
+      
+
+
+
     </div>
   );
 }
