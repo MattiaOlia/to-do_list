@@ -3,10 +3,11 @@ import './App.css';
 import {
   AppBar,
   Toolbar,
-  Typography,Container,TextField,Button,List,ListItem,ListItemText,ListItemSecondaryAction,IconButton}
+  Typography,Container,TextField,Fab,List,ListItem,ListItemText,ListItemSecondaryAction,IconButton}
    from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckIcon from '@mui/icons-material/Check';
+import AddTaskIcon from '@mui/icons-material/Add';
 
 
 
@@ -19,8 +20,8 @@ function App() {
   
   
   function handleAddTask (){
-    const newId = Date.now();
-    const newTaskObject = { id: newId, content: newTask, isCompleted:false}
+    const newId = Date.now(); 
+    const newTaskObject = { id: newId, content: newTask, isCompleted:false} //* content => task text, isCompleted => changes the property style
     setTasks([...tasks, newTaskObject]);
     setNewTask('');
   }
@@ -29,7 +30,8 @@ function App() {
     const updatedTasks = tasks.filter((task) => task.id !== id);
     setTasks(updatedTasks);
   }
-
+  
+  //* changes isCompleted attribute
   function handleCompleteTask(id){
     const updatedTasks = tasks.map((task)=>{
       if(task.id===id){
@@ -64,9 +66,10 @@ function App() {
       />
 
       {/** BUTTON ADD handleAddTask */}
-      <Button onClick={handleAddTask} variant="contained" color="primary" size="small" >
-          Add
-        </Button>
+      
+        <Fab onClick={handleAddTask} variant="contained" color="primary" size="small" >
+          <AddTaskIcon />
+        </Fab>
       
       {/** LIST OF TASKS */}
         <List sx={{ marginTop: '20px' }}>
@@ -74,14 +77,23 @@ function App() {
             <ListItem
              display={'flex'}
              key={task.id}
-             sx={{backgroundColor: task.isCompleted ? 'rgba(33, 150, 243, 0.8)' : 'white'}}
-            >
+             sx={{
+              backgroundColor: task.isCompleted ? 'rgba(33, 150, 243, 0.8)' : 'white' ,
+              marginTop: '0.5em',
+              p: '1em',
+              borderRadius: '20px',
+              color: task.isCompleted ? 'white' : 'black',
+              border: task.isCompleted ? 'none' : 'solid rgba(33, 150, 243, 0.8)' 
+            }}
+          >
+            
               {/** TASK TEXT */}
               <ListItemText primary={task.content} />
 
               
               <ListItemSecondaryAction>
-
+               
+              {/** BUTTON FOR COMPLEATED TASK */} 
                 <IconButton
                   edge="end"
                   aria-label="completed"
@@ -90,12 +102,14 @@ function App() {
                 >
                   <CheckIcon />
                 </IconButton>
-
+              
+              {/**BUTTON FOR DELETE TASK */}
                 <IconButton
                   edge="end"
                   aria-label="delete"
                   onClick={() => handleDeleteTask(task.id)}
-                  ml="1em"
+                  sx={{color: task.isCompleted ? 'white' : 'rgba(33, 150, 243, 0.8)'}}
+                  pl="5em"
                 >
                   <DeleteIcon />
                 </IconButton>
